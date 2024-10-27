@@ -62,7 +62,7 @@ export class AlertsService {
           // Send alert email
           const mailOptions = {
             from: this.configService.get<string>('EMAIL_USER'),
-            to: 'hyperhire_assignment@hyperhire.in',
+            to: 'vivekkhudaniya@gmail.com',
             subject: `Price Alert: ${token} increased by more than 3%`,
             html: `
               <h2>Price Increase Alert</h2>

@@ -20,12 +20,18 @@ export class CronService {
       
       // Fetch and save prices using PricesService
       const { ethPrice, maticPrice } = await this.pricesService.fetchAndSavePrices();
+      this.logger.log(`Fetched prices - ETH: ${ethPrice}, MATIC: ${maticPrice}`);
+
+      // Check for 3% price increases
+      await this.alertsService.checkPriceIncrease('ETH', ethPrice);
+      await this.alertsService.checkPriceIncrease('MATIC', maticPrice);
+      this.logger.log('Completed price increase checks');
       
-      // Check price alerts
+      // Check user-set price alerts
       await this.alertsService.checkPriceAlerts('ETH', ethPrice);
       await this.alertsService.checkPriceAlerts('MATIC', maticPrice);
-      
-      this.logger.log('Completed price check and alerts');
+      this.logger.log('Completed price alert checks');
+
     } catch (error) {
       this.logger.error('Error in scheduled task:', error);
     }
