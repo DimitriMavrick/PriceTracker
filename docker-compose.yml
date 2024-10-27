@@ -1,28 +1,38 @@
-
+version: '3.8'
 
 services:
   app:
     build: .
     environment:
-      - DATABASE_URL=postgres://postgres:123456789@postgres:5432/pricetraker  # Update to match PostgreSQL credentials
+      - DATABASE_URL=postgres://postgres:123456789@postgres:5432/pricetraker
+      - MORALIS_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJub25jZSI6IjBhNmM0ZTUzLTg0ZjMtNDgwMC1iYjJjLTA3ZDA4Y2I5M2QwOSIsIm9yZ0lkIjoiMTMwODc2IiwidXNlcklkIjoiMTMwNTIyIiwidHlwZUlkIjoiNDYyOTU1ZTUtYzc0OC00NzI3LWExNDgtOGJiMjBlM2MyODZiIiwidHlwZSI6IlBST0pFQ1QiLCJpYXQiOjE3MTM3NzExODksImV4cCI6NDg2OTUzMTE4OX0.I8GieZ6Ud9hHvwRz1HHGHVeSIxz-TymGvbxsw8Difxo
+      - EMAIL_USER=
+      - EMAIL_PASS=
     depends_on:
       - postgres
     ports:
       - "3000:3000"
     networks:
       - blockchain-net
+    restart: always
 
   postgres:
-    image: postgres:13  # Use version 13 to match the data directory initialization
+    image: postgres:13
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456789
       POSTGRES_DB: pricetraker
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - blockchain-net
+    restart: always
 
 networks:
   blockchain-net:
     driver: bridge
+
+volumes:
+  postgres_data:

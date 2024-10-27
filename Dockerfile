@@ -1,21 +1,22 @@
-# Use the official Node.js image
 FROM node:18
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package.json ./
-COPY package-lock.json ./
+# Copy package files
+COPY package*.json ./
 
-# Install dependencies
+# Install dependencies and NestJS CLI
+RUN npm install -g @nestjs/cli
 RUN npm install
 
 # Copy the rest of the application files
 COPY . .
 
+# Generate the build
+RUN npm run build
+
 # Expose the application port
 EXPOSE 3000
 
 # Start the application
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start:prod"]
