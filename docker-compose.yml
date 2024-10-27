@@ -1,0 +1,28 @@
+
+
+services:
+  app:
+    build: .
+    environment:
+      - DATABASE_URL=postgres://postgres:123456789@postgres:5432/pricetraker  # Update to match PostgreSQL credentials
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    networks:
+      - blockchain-net
+
+  postgres:
+    image: postgres:13  # Use version 13 to match the data directory initialization
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456789
+      POSTGRES_DB: pricetraker
+    ports:
+      - "5432:5432"
+    networks:
+      - blockchain-net
+
+networks:
+  blockchain-net:
+    driver: bridge
